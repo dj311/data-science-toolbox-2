@@ -5,3 +5,4 @@ Modelling:
 
 Performance metrics:
   - Confusion matrix: https://en.wikipedia.org/wiki/Confusion_matrix
+  - Chi-Squared Test?
