@@ -1,12 +1,14 @@
-Modelling:
+
+# Research into classification techniques
   - Penalized Regression: https://web.as.uky.edu/statistics/users/pbreheny/764-F11/notes/8-30.pdf
   - Non linear link function/regression : https://stats.stackexchange.com/questions/120047/nonlinear-vs-generalized-linear-model-how-do-you-refer-to-logistic-poisson-e
   - Beyond Linear Regression : https://www4.stat.ncsu.edu/~reich/st590/Nonlinear.pdf
   - variable selection: http://www.biostat.jhsph.edu/~iruczins/teaching/jf/ch10.pdf
-
-Performance metrics:
-  - Confusion matrix: https://en.wikipedia.org/wiki/Confusion_matrix
-  - Chi-Squared Test?
+  - Info on Bootstrapping : https://www.statmethods.net/advstats/bootstrapping.html
+  - Info on Clustering : https://www.statmethods.net/advstats/cluster.html
+  - Info on Binary Logistic Regression : https://www.statisticssolutions.com/binary-logistic-regression/
+  - Info on AIC/BIC:https://methodology.psu.edu/AIC-vs-BIC
+  - Logit model in R: https://onlinecourses.science.psu.edu/stat504/node/225/
 
 Paper which compares 3 methods of classifying network data in the KDD-99 data set as normal or bad:
   - Katos, V., 2007. Network intrusion detection: Evaluating cluster, discriminant, and logit analysis. Information Sciences, 177(15), pp.3060-3073. https://doi.org/10.1016/j.ins.2007.02.034
@@ -14,13 +16,8 @@ Paper which compares 3 methods of classifying network data in the KDD-99 data se
   > This paper evaluates the statistical methodologies of cluster analysis, discriminant analysis, and Logit analysis used in the examination of intrusion detection data. The research is based on a sample of 1200 random observations for 42 variables of the KDD-99 database, that contains ‘normal’ and ‘bad’ connections. The results indicate that Logit analysis is more effective than cluster or discriminant analysis in intrusion detection. Specifically, according to the Kappa statistic that makes full use of all the information contained in a confusion matrix, Logit analysis (K = 0.629) has been ranked first, with second discriminant analysis (K = 0.583), and third cluster analysis (K = 0.460).
 
 
-  Info on Bootstrapping : https://www.statmethods.net/advstats/bootstrapping.html
-  Info on Clustering : https://www.statmethods.net/advstats/cluster.html
-  Info on Binary Logistic Regression : https://www.statisticssolutions.com/binary-logistic-regression/
 
-  Info on AIC/BIC:https://methodology.psu.edu/AIC-vs-BIC
-  Info on PRESS(predicted residual error sum of squares): https://en.wikipedia.org/wiki/PRESS_statistic
-  Logit model in R: https://onlinecourses.science.psu.edu/stat504/node/225/
+## Research using penalisation into enhance existing models
 
 # Research into performance metrics for classification
 
@@ -35,6 +32,11 @@ We should also consider (and write about) the **context** of this work:
 
   - We are looking to classify traffic as `normal` and `not-normal`, where `not-normal` traffic is probably malicious.
   - We don't want false negatives, but still need a balance: we care about **sensitivity**.
+
+
+## Residual Errors
+  Info on PRESS(predicted residual error sum of squares): https://en.wikipedia.org/wiki/PRESS_statistic
+
 
 ## Cross-Validation
 
