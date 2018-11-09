@@ -19,6 +19,9 @@ Paper which compares 3 methods of classifying network data in the KDD-99 data se
   Info on Clustering : https://www.statmethods.net/advstats/cluster.html
   Info on Binary Logistic Regression : https://www.statisticssolutions.com/binary-logistic-regression/
   
+  Info on AIC/BIC:https://methodology.psu.edu/AIC-vs-BIC
+  Info on PRESS(predicted residual error sum of squares): https://en.wikipedia.org/wiki/PRESS_statistic
+  Logit model in R: https://onlinecourses.science.psu.edu/stat504/node/225/
 =======
 
 Dans sneaky change
