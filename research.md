@@ -13,3 +13,8 @@ Paper which compares 3 methods of classifying network data in the KDD-99 data se
   - Katos, V., 2007. Network intrusion detection: Evaluating cluster, discriminant, and logit analysis. Information Sciences, 177(15), pp.3060-3073. https://doi.org/10.1016/j.ins.2007.02.034
   - Abstract:
   > This paper evaluates the statistical methodologies of cluster analysis, discriminant analysis, and Logit analysis used in the examination of intrusion detection data. The research is based on a sample of 1200 random observations for 42 variables of the KDD-99 database, that contains ‘normal’ and ‘bad’ connections. The results indicate that Logit analysis is more effective than cluster or discriminant analysis in intrusion detection. Specifically, according to the Kappa statistic that makes full use of all the information contained in a confusion matrix, Logit analysis (K = 0.629) has been ranked first, with second discriminant analysis (K = 0.583), and third cluster analysis (K = 0.460).
+  
+  Info on Bootstrapping : https://www.statmethods.net/advstats/bootstrapping.html
+  Info on Clustering : https://www.statmethods.net/advstats/cluster.html
+  Info on Binary Logistic Regression : https://www.statisticssolutions.com/binary-logistic-regression/
+  
