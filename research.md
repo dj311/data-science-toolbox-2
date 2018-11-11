@@ -100,6 +100,7 @@ TODO: Find out more about this. Is it applicable, if so how?
 ## Cohen's Kappa Statistic
 
   - Used in <sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup> to evaluate metrics
+  - Page with pros, cons and links to papers with more detailed analysis: http://www.john-uebersax.com/stat/kappa.htm#procon
 
 Function of all elements in a [1.2](#orgbad24e6).
 
@@ -111,6 +112,7 @@ From <Cohen's_kappa>:
 > into account the possibility of the agreement occurring by chance. There is
 > controversy surrounding Cohen’s kappa due to the difficulty in interpreting
 > indices of agreement.
+
 
 
 # Footnotes
