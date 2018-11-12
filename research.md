@@ -24,7 +24,11 @@ From Wikipedia (https://en.wikipedia.org/wiki/Probit_model):
 >
 > A probit model is a popular specification for an ordinal or a binary response model. As such it treats the same set of problems as does logistic regression using similar techniques. The probit model, which employs a probit link function, is most often estimated using the standard maximum likelihood procedure, such an estimation being called a probit regression.
 >
-> Probit models were introduced by Chester Bliss in 1934; [^1]  a fast method for computing maximum likelihood estimates for them was proposed by Ronald Fisher as an appendix to Bliss' work in 1935. [^2]
+> Probit models were introduced by Chester Bliss in 1934;  a fast method for computing maximum likelihood estimates for them was proposed by Ronald Fisher as an appendix to Bliss' work in 1935.
+
+Sources:
+  - Chester Bliss [^1]
+  - Ronald Fisher [^2]
 
 
 ### Clustering
