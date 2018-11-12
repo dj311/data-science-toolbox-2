@@ -77,7 +77,7 @@ Using the simple measure of [accuracy](Accuracy_and_precision#In_binary_classifi
   - <https://en.wikipedia.org/wiki/Receiver_operating_characteristic>
   - <sup><a id="fnr.1.100" class="footref" href="#fn.1">1</a></sup>
 
-A ROC curve is a plot of sensitivity versus specificity, and plots the available trade-off between the two.
+A ROC curve is a plot of sensitivity versus specificity, and alllowing visualisation of the available trade-off between the two.
 
 
 ## Precision-Recall Curve
@@ -86,6 +86,7 @@ Optional addition to compare with ROC curve:
 
 > PR curves are especially useful in evaluating data with highly unbalanced outcomes.
 
+How many normal vs. non-normal samples do we have? Are they balanced or not, if they are unbalanced, consider using a precision-recall curve.
 
 ## Lift
 
