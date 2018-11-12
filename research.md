@@ -114,6 +114,9 @@ From <Cohen's_kappa>:
 > controversy surrounding Cohen’s kappa due to the difficulty in interpreting
 > indices of agreement.
 
+# Some info about using R
+
+  http://www.gastonsanchez.com/how-to/2012/10/13/MCA-in-R/
 
 
 # Footnotes
