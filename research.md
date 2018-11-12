@@ -17,6 +17,16 @@ Paper which compares 3 methods of classifying network data in the KDD-99 data se
 
 ### Logistic Regression
 
+### Probit Regression
+From Wikipedia (https://en.wikipedia.org/wiki/Probit_model):
+
+> In statistics, a probit model is a type of regression where the dependent variable can take only two values, for example married or not married. The word is a portmanteau, coming from probability + unit.[1] The purpose of the model is to estimate the probability that an observation with particular characteristics will fall into a specific one of the categories; moreover, classifying observations based on their predicted probabilities is a type of binary classification model.
+>
+> A probit model is a popular specification for an ordinal or a binary response model. As such it treats the same set of problems as does logistic regression using similar techniques. The probit model, which employs a probit link function, is most often estimated using the standard maximum likelihood procedure, such an estimation being called a probit regression.
+>
+> Probit models were introduced by Chester Bliss in 1934; [^1]  a fast method for computing maximum likelihood estimates for them was proposed by Ronald Fisher as an appendix to Bliss' work in 1935. [^2]
+
+
 ### Clustering
 
 ### ...
@@ -124,3 +134,7 @@ From <Cohen's_kappa>:
 <sup><a id="fn.1" href="#fnr.1">1</a></sup> Practical Statistics for Data Science, 1st ed., by Peter Bruce and Andrew Bruce (O’Reilly Media, 2017).
 
 <sup><a id="fn.2" href="#fnr.2">2</a></sup> Katos, V., 2007. Network intrusion detection: Evaluating cluster, discriminant, and logit analysis. Information Sciences, 177(15), pp.3060-3073. <https://doi.org/10.1016/j.ins.2007.02.034>
+
+[^1]: Bliss, C. I. (1934). "The Method of Probits". Science. 79 (2037): 38–39. doi:10.1126/science.79.2037.38. PMID 17813446.
+
+[^2]: Fisher, R. A. (1935). "The Case of Zero Survivors in Probit Assays". Annals of Applied Biology. 22: 164–165. doi:10.1111/j.1744-7348.1935.tb07713.x. 
