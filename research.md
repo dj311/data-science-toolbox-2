@@ -3,13 +3,10 @@ Note: We should cite the data set using "Hettich, S. and Bay, S. D. (1999). The 
 
 
 # Research into classification techniques
-  - Non linear link function/regression : https://stats.stackexchange.com/questions/120047/nonlinear-vs-generalized-linear-model-how-do-you-refer-to-logistic-poisson-e
   - Beyond Linear Regression : https://www4.stat.ncsu.edu/~reich/st590/Nonlinear.pdf
   - variable selection: http://www.biostat.jhsph.edu/~iruczins/teaching/jf/ch10.pdf
   - Info on Bootstrapping : https://www.statmethods.net/advstats/bootstrapping.html
   - Info on Clustering : https://www.statmethods.net/advstats/cluster.html
-  - Info on Binary Logistic Regression : https://www.statisticssolutions.com/binary-logistic-regression/
-  - Logit model in R: https://onlinecourses.science.psu.edu/stat504/node/225/
 
 Paper which compares 3 methods of classifying network data in the KDD-99 data set as normal or bad:
   - Katos, V., 2007. Network intrusion detection: Evaluating cluster, discriminant, and logit analysis. Information Sciences, 177(15), pp.3060-3073. https://doi.org/10.1016/j.ins.2007.02.034
@@ -19,6 +16,8 @@ Paper which compares 3 methods of classifying network data in the KDD-99 data se
 ## Classification Techniques
 
 ### Logistic Regression
+  - Info on Binary Logistic Regression : https://www.statisticssolutions.com/binary-logistic-regression/
+  - Logit model in R: https://onlinecourses.science.psu.edu/stat504/node/225/
 
 ### Probit Regression
 From Wikipedia (https://en.wikipedia.org/wiki/Probit_model):
@@ -40,6 +39,13 @@ Sources:
 
 
 ## Additions
+
+### Non linear link function/regression
+  - https://stats.stackexchange.com/questions/120047/nonlinear-vs-generalized-linear-model-how-do-you-refer-to-logistic-poisson-e
+  - https://en.wikipedia.org/wiki/Generalized_linear_model#Link_function
+
+Dan thinks that both logistic regression and probit regression (described above) are examples of using non-linear link functions. Is that right?
+
 
 ### Penalisation to enhance existing models
   - BST 764: Applied Statistical Modelling, https://web.as.uky.edu/statistics/users/pbreheny/764-F11/notes/8-30.pdf
@@ -144,4 +150,4 @@ From <Cohen's_kappa>:
 
 [^1]: Bliss, C. I. (1934). "The Method of Probits". Science. 79 (2037): 38–39. doi:10.1126/science.79.2037.38. PMID 17813446.
 
-[^2]: Fisher, R. A. (1935). "The Case of Zero Survivors in Probit Assays". Annals of Applied Biology. 22: 164–165. doi:10.1111/j.1744-7348.1935.tb07713.x. 
+[^2]: Fisher, R. A. (1935). "The Case of Zero Survivors in Probit Assays". Annals of Applied Biology. 22: 164–165. doi:10.1111/j.1744-7348.1935.tb07713.x.
