@@ -1,4 +1,7 @@
 
+Note: We should cite the data set using "Hettich, S. and Bay, S. D. (1999). The UCI KDD Archive [http://kdd.ics.uci.edu]. Irvine, CA: University of California, Department of Information and Computer Science."
+
+
 # Research into classification techniques
   - Non linear link function/regression : https://stats.stackexchange.com/questions/120047/nonlinear-vs-generalized-linear-model-how-do-you-refer-to-logistic-poisson-e
   - Beyond Linear Regression : https://www4.stat.ncsu.edu/~reich/st590/Nonlinear.pdf
