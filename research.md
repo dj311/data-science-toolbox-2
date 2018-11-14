@@ -140,6 +140,8 @@ From <Cohen's_kappa>:
 # Some info about using R
 
   http://www.gastonsanchez.com/how-to/2012/10/13/MCA-in-R/
+# R code
+  https://github.com/jaketarnow/IntrusionDetector/blob/master/intrusion-detector.R
 
 
 # Footnotes
