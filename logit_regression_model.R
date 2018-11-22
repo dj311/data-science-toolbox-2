@@ -42,5 +42,57 @@ accuracy<-(confusion[1,1]+confusion[2,2])/length(fitted.results)
 accuracy
 confusion
 
+#k-fold cv
+#Create 10 equally size folds
+folds <- cut(seq(1,nrow(kddata)),breaks=10,labels=FALSE)
+
+#Perform 10 fold cross validation\n",
+for(i in 1:10){
+  #Segement your data by fold using the which() function 
+  testIndexes <- which(folds==i,arr.ind=TRUE)
+  testData <- kddata[testIndexes, ]
+  trainData <- kddata[-testIndexes, ]
+  model4<-glm(normal~service+logged_in+count+srv_count, family=binomial(link=logit), data=trainData)
+  fitted_results4 <- predict(model4,newdata=testData,type = 'response')
+  fitted_results_4 <- ifelse(fitted_results4 > 0.5,1,0)
+  cm<-confusionMatrix(factor(fitted_results_4),factor(testData$normal),positive="1",dnn = c("prediction","actual"))
+}
+summary(model4)
+cm
 
 
+library(e1071)
+library(ggplot2)
+
+library(lattice)
+library(caret)
+#k-fold cv
+#Create 10 equally size folds
+folds = createFolds(kddata$normal, k = 10)
+cv = lapply(folds, function(x) {
+  training_fold = kddata[-x, ]
+  test_fold = kddata[x, ]
+  model = glm(normal~service+logged_in+srv_count+count, family=binomial(link=logit), data=training_fold)
+  y_pred = predict(model, newdata = test_fold)
+  y_pred <- ifelse(y_pred > 0.5,1,0)
+  cm<-confusionMatrix(factor(y_pred),factor(test_fold$normal),positive="1",dnn = c("prediction","actual"))
+  return(cm$table)
+})
+
+
+
+folds = createFolds(kddata$normal, k = 10)
+cv = lapply(folds, function(x) {
+  training_fold = kddata[-x, ]
+  test_fold = kddata[x, ]
+  classifier = svm(formula = normal ~ service+count, data = training_fold, type = "C-classification", kernel = "linear")
+  y_pred = predict(classifier, newdata = test_fold)
+  cm = table(test_fold$normal, y_pred)
+  accuracy = (cm[1,1] + cm[2,2])/(cm[1,1] + cm[2,2] + cm[1,2] + cm[2,1])
+  return(accuracy)
+})
+cv
+Macc = mean(as.numeric(cv))
+Macc
+classifier <- svm(normal ~ service+count, data = train, type = "C-classification", kernel = "linear")
+classifier
