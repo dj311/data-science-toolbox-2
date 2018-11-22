@@ -1,0 +1,141 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(ggplot2)
+library(lattice)
+library(e1071)
+library(caret)
+```
+
+
+```{r}
+#read the data and name the col
+kddata<-read.csv("D:/datascience/data/kddcup.data_10_percent.gz")
+
+kddnames=read.table(
+    "D:/datascience/data/kddcup.names",
+    sep=":",
+    skip=1,
+    as.is=T
+)
+
+colnames(kddata)=c(kddnames[,1], "normal")
+head(kddata)
+```
+
+```{r}
+#set normal col to two levels:normal=0,bad=1
+levels(kddata$normal)[which(levels(kddata$normal) !='normal.')] <- "bad."
+kddata$normal<-as.numeric(factor(kddata$normal,levels = c("normal.","bad."))) -1 
+unique(kddata$normal)
+```
+
+```{r}
+#set service col to three levels:private=1,http=2,others=3
+levels(kddata$service)[which(levels(kddata$service) != "http" & levels(kddata$service) != "private")] <- "others"
+kddata$service<-as.numeric(factor(kddata$service,levels = c("private","http","others")))
+unique(kddata$service)
+```
+For getting train and test data, my basic idea is like we first split the data into bad and normal, and use 80% of each dataset to be our train data, and 20% as our test data.
+
+
+```{r}
+set.seed(1)
+#split data into train and test
+#first we split data into "normal" and "bad"
+kddata_normal<-kddata[which(kddata$normal==0),]
+kddata_bad<-kddata[which(kddata$normal==1),]
+# define an 80%/20% train/test split of the dataset
+# we sample "normal" and "bad" dataset
+sample_normal<-sample(seq_len(nrow(kddata_normal)),size=floor(.80*nrow(kddata_normal)))
+sample_bad<-sample(seq_len(nrow(kddata_bad)),size=floor(.80*nrow(kddata_bad)))
+# we get train and test for "normal" dataset
+train_normal<-kddata_normal[sample_normal,]
+test_normal<-kddata_normal[-sample_normal,]
+# we get train and test for "bad" dataset
+train_bad<-kddata_bad[sample_bad,]
+test_bad<-kddata_bad[-sample_bad,]
+#combine "normal" and "bad" train dataset to get train dataset, same for "bad"
+train<-rbind(train_normal,train_bad)
+test<-rbind(test_normal,test_bad)
+```
+
+Now, we start to build our model, we first pick for variable that i am interested. 
+
+```{r}
+#model 1: variable:service(network service on the destination), logged_in(1 if successfully logged in; 0 otherwise), 
+#                  srv_count(	number of connections to the same service as the current connection in the past two seconds),
+#                  count(number of connections to the same host as the current connection in the past two seconds )
+#                   
+model1<-glm(normal~service+logged_in+srv_count+count, family=binomial(link=logit), data=train)
+summary(model1)
+
+
+```
+
+Now we have model here, then we need to predict our test data. The prediction will not be 0 or 1, it should be some probablity that "bad" occured. So, we need to assume if fitted value is larger than 0.5, we set it as 1, otherwise, it is 0.
+```{r}
+fitted_results <- predict(model1,newdata=test,type = 'response') ##use "response" to get pi, not logit(pi)
+fitted_results <- ifelse(fitted_results > 0.5,1,0) ##this line means if pi is bigger than 0.5, we assume it is 'bad', otherwise 
+                                                   ##it is normal.
+#confusion matrix for model 1
+confusionMatrix(factor(fitted_results),factor(test$normal),positive="1",dnn = c("prediction","actual"))
+```
+MODEL SELECTION
+
+Now, we build our model 2, we delete variable "count" from model 1
+```{r}
+#model 2: variable:service(network service on the destination), logged_in(1 if successfully logged in; 0 otherwise), 
+#                  srv_count(	number of connections to the same service as the current connection in the past two seconds)
+#                   
+model2<-glm(normal~service+logged_in+srv_count, family=binomial(link=logit), data=train)
+summary(model2)
+fitted_results2 <- predict(model2,newdata=test,type = 'response')
+fitted_results2 <- ifelse(fitted_results2 > 0.5,1,0)
+
+confusionMatrix(factor(fitted_results2),factor(test$normal),positive="1",dnn = c("prediction","actual"))
+```
+From the confusion matrix, we can easily see that model 1 is better than model 2. Accuracy, sensitivity, specificity of model 1 are all better than those of model 2.
+
+Now we build model 3, delete variable "srv_count" from model 1.
+
+```{r}
+#model 3: variable:service(network service on the destination), logged_in(1 if successfully logged in; 0 otherwise), 
+#                  count(number of connections to the same host as the current connection in the past two seconds )
+# 
+model3<-glm(normal~service+logged_in+count, family=binomial(link=logit), data=train)
+summary(model3)
+fitted_results3 <- predict(model3,newdata=test,type = 'response')
+fitted_results3 <- ifelse(fitted_results3 > 0.5,1,0)
+
+confusionMatrix(factor(fitted_results3),factor(test$normal),positive="1",dnn = c("prediction","actual"))
+```
+Based on confusion matrix of model 1 and model 3, we cannot easily pick which model is better, since sensitivity of model 1 is smaller than model 3, but specificity of model 1 is larger. Therefore, here we choose to use likelihood ratio test to determine which model is better. we assume that the parameter of srv_count = 0. 
+
+```{r}
+#likelihood ratio test
+anova(model3, model1,test="LRT")
+```
+
+we have p-value is very small. So, we reject the hypothesis that parameter of srv_count = 0. We choose model 1 as our model. 
+
+Futhermore, we use k-fold cross validation to fit our model 1. we set 10 folds.
+
+```{r}
+#k-fold cv
+#Create 10 equally size folds
+folds = createFolds(kddata$normal, k = 10)
+cv_logit = lapply(folds, function(x) {
+  training_fold = kddata[-x, ]
+  test_fold = kddata[x, ]
+  model = glm(normal~service+logged_in+srv_count+count, family=binomial(link=logit), data=training_fold)
+  y_pred = predict(model, newdata = test_fold)
+  y_pred <- ifelse(y_pred > 0.5,1,0)
+  cm<-confusionMatrix(factor(y_pred),factor(test_fold$normal),positive="1",dnn = c("prediction","actual"))
+  return(cm$table)
+})
+cv_logit
+```
+
