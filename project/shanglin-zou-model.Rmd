@@ -1,7 +1,9 @@
 ---
-title: "R Notebook"
+title: "Shanglin's model"
 output: html_notebook
 ---
+Individual section in "/project/report.ipynb"
+
 ```{r}
 library(ggplot2)
 library(lattice)
