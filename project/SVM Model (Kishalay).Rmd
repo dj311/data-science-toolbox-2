@@ -13,15 +13,12 @@ kddata = read.csv("../data/kddcup.data_10_percent.gz")
 kddnames = read.table("../data/kddcup.names",sep = ":", skip = 1, as.is = T)
 colnames(kddata)=c(kddnames[,1],"normal")
 head(kddata)
-
-```
-
-```{r}
 set.seed(1)
 
 ```
 
-##no of cols
+In Code Chunk 1, I am calling the library function data.table, which allows me to read in the data. Then, I rename the columns using the file kddnames and just check the first 6 observations of each column to ensure that my changes have taken effect. I am also setting a seed value for the random number generator.
+
 
 
 ```{r}
@@ -36,8 +33,7 @@ head(pruned_kddata)
 
 ```
 
-##no of cols changed
-
+In Code Chunk 2, I am trying to find out if any of the 42 columns consist of just one value, throughout. If such a column(s), exists, I will remove that column from my dataset. This is because, since these columns have the same value for both categories of the response variable (normal, bad), it is logical to assume that they won't be affecting the response variable at all. 
 
 
 ```{r}
@@ -49,8 +45,8 @@ head(pruned_kddata[which(pruned_kddata$normal!='normal.'),])
 pruned_kddata$normal = factor(pruned_kddata$normal, levels = c('normal.','bad.'))
 nrow(pruned_kddata[which(pruned_kddata$normal=='bad.'),])
 ```
-##check that name has changed
 
+In Code Chunk 3, I am renaming every response corresponding to malicious attacks, as 'bad.'. I have already explained my reasons for doing so in the Main Report. 
 
 
 ```{r}
@@ -61,6 +57,7 @@ dataset2 = pruned_kddata[pruned_kddata$normal=="bad.",]
 
 ```
 
+In Code Chunk 4, I am dividing the new dataset into 2 parts - the first part consists of those rows whose values for the Normal column correspond to 'normal.'. The second part consists of those rows whose values for the Normal column correspond to 'bad.'.
 
 ```{r}
 #CODE CHUNK 5
@@ -70,6 +67,7 @@ sample1 = dataset1[sample1_indexes,]
 
 ```
 
+In Code Chunk 5, I am sampling 90% of the observations from the first part of the dataset.
 
 ```{r}
 #CODE CHUNK 6
@@ -79,9 +77,10 @@ sample2 = dataset2[sample2_indexes,]
 
 ```
 
+In Code Chunk 6, I am sampling 90% of the observations from the second part of the dataset.
 
 ```{r}
-#CODE CHUNK 6
+#CODE CHUNK 7
 
 main_sample1 = rbind(sample1,sample2)
 test_data1 = dataset1[-sample1_indexes,]
@@ -91,9 +90,11 @@ main_test_data = rbind(test_data1,test_data2)
 ```
 
 
-##tocheck if linear works and if the accuracy seems affected by variance fluctuations.
+In Code Chunk 7, I bound the two samples from CC6 to create the Training Set. I called it main_sample1.
+Similarly, I bound the observations left over after the two sampling operations to create the Test Set. I called it main_test_data.
+
 ```{r}
-#CODE CHUNK 7
+#CODE CHUNK 8
 
 install.packages('caret')
 install.packages('e1071')
@@ -102,8 +103,10 @@ library(e1071)
 
 ```
 
+In Code Chunk 8, I am installing some packages necessary for carrying out SVM later on.
+
 ```{r}
-#CODE CHUNK 8
+#CODE CHUNK 9
 
 classifier = svm(formula = normal ~ ., data = main_sample1, type = "C-classification", kernel = "linear")
 y_pred = predict(classifier, newdata = main_test_data)
@@ -113,9 +116,10 @@ trial_acc
 
 ```
 
-##applying k fold classification and creating confusion matrices.
+In Code Chunk 9, I am carrying out the analysis using SVM. I am not implementing k fold cross validation yet.
+
 ```{r}
-#CODE CHUNK 9
+#CODE CHUNK 10
 
 folds = createFolds(main_sample1$normal, k = 10)
 
@@ -133,9 +137,10 @@ summary_matrix
 
 ```
 
-##finding and averaging acccuracies
+In Code Chunk 10, I am carrying out k fold cross validation. However, I am doing it on 90% of the total data, since, when I tried this on the actual data, it ran for more than 2 hours, without a result, and finally reported a warning that the system was reaching the maximum number of iterations. I am trying to store the Confusion Matrices obtained on each iteration and finally adding them to get the main Confusion Matrix.
+
 ```{r}
-#CODE CHUNK 10
+#CODE CHUNK 11
 
 accuracies = lapply(confusion_matrices, function(cm) {
   accuracy = (cm[1,1] + cm[2,2])/(cm[1,1] + cm[2,2] + cm[1,2] + cm[2,1])
@@ -149,7 +154,9 @@ Macc
 
 
 
+In Code Chunk 11, I am calculating the accuracy of each iteration, and finally, obtaining their mean. This mean is theoretically, a better value since it is devoid of variablity errors. 
 
+NOTE - Code Chunk 11 is run on 90% data since my machine crashed when I tried to run it on the entire data. Also, this code itself ran once, and crashed a couple of times, after 2 hours. 
 
 
 
