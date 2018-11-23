@@ -1,0 +1,156 @@
+---
+title: "SVM Model (Kishalay)"
+author: "Kishalay"
+date: "23 November 2018"
+output: html_document
+---
+
+```{r}
+#CODE CHUNK 1
+
+library(data.table)
+kddata = read.csv("../data/kddcup.data_10_percent.gz")
+kddnames = read.table("../data/kddcup.names",sep = ":", skip = 1, as.is = T)
+colnames(kddata)=c(kddnames[,1],"normal")
+head(kddata)
+
+```
+
+```{r}
+set.seed(1)
+
+```
+
+##no of cols
+
+
+```{r}
+#CODE CHUNK 2
+
+unique_values = apply(kddata,2,unique)
+colcounts = lapply(unique_values,length)
+constants = colcounts==1
+not_constants = !constants
+pruned_kddata = kddata[,not_constants]
+head(pruned_kddata)
+
+```
+
+##no of cols changed
+
+
+
+```{r}
+#CODE CHUNK 3
+
+levels(pruned_kddata$normal) = c(levels(pruned_kddata$normal), 'bad.')
+pruned_kddata[which(pruned_kddata$normal!='normal.'), 'normal'] = 'bad.'
+head(pruned_kddata[which(pruned_kddata$normal!='normal.'),])
+pruned_kddata$normal = factor(pruned_kddata$normal, levels = c('normal.','bad.'))
+nrow(pruned_kddata[which(pruned_kddata$normal=='bad.'),])
+```
+##check that name has changed
+
+
+
+```{r}
+#CODE CHUNK 4
+
+dataset1 = pruned_kddata[pruned_kddata$normal=="normal.",]
+dataset2 = pruned_kddata[pruned_kddata$normal=="bad.",]
+
+```
+
+
+```{r}
+#CODE CHUNK 5
+
+sample1_indexes = sample(nrow(dataset1), size = floor(0.8*nrow(dataset1)), prob=NULL)
+sample1 = dataset1[sample1_indexes,]
+
+```
+
+
+```{r}
+#CODE CHUNK 6
+
+sample2_indexes = sample(nrow(dataset2), size = floor(0.9*nrow(dataset2)),prob=NULL)
+sample2 = dataset2[sample2_indexes,]
+
+```
+
+
+```{r}
+#CODE CHUNK 6
+
+main_sample1 = rbind(sample1,sample2)
+test_data1 = dataset1[-sample1_indexes,]
+test_data2 = dataset2[-sample2_indexes,]
+main_test_data = rbind(test_data1,test_data2)
+
+```
+
+
+##tocheck if linear works and if the accuracy seems affected by variance fluctuations.
+```{r}
+#CODE CHUNK 7
+
+install.packages('caret')
+install.packages('e1071')
+library(caret)
+library(e1071)
+
+```
+
+```{r}
+#CODE CHUNK 8
+
+classifier = svm(formula = normal ~ ., data = main_sample1, type = "C-classification", kernel = "linear")
+y_pred = predict(classifier, newdata = main_test_data)
+c_trial = table(main_test_data$normal, y_pred)
+trial_acc = (c_trial[1,1] + c_trial[2,2])/(c_trial[1,1] + c_trial[1,2] + c_trial[2,1] + c_trial[2,2])
+trial_acc
+
+```
+
+##applying k fold classification and creating confusion matrices.
+```{r}
+#CODE CHUNK 9
+
+folds = createFolds(main_sample1$normal, k = 10)
+
+confusion_matrices = lapply(folds, function(x) {
+  training_fold = main_sample1[-x, ]
+  test_fold = main_sample1[x, ]
+  classifier = svm(formula = normal ~ ., data = training_fold, type = "C-classification", kernel = "linear")
+  y_pred = predict(classifier, newdata = test_fold)
+  cm = table(test_fold$normal, y_pred)
+  return(cm)
+})
+
+summary_matrix = Reduce('+', confusion_matrices)
+summary_matrix
+
+```
+
+##finding and averaging acccuracies
+```{r}
+#CODE CHUNK 10
+
+accuracies = lapply(confusion_matrices, function(cm) {
+  accuracy = (cm[1,1] + cm[2,2])/(cm[1,1] + cm[2,2] + cm[1,2] + cm[2,1])
+  return(accuracy)
+})
+
+Macc = mean(as.numeric(accuracies))
+Macc
+
+```
+
+
+
+
+
+
+
+
