@@ -11,7 +11,7 @@ library(e1071)
 library(caret)
 ```
 
-
+##read the data
 ```{r}
 #read the data and name the col
 kddata<-read.csv(".../data/kddcup.data_10_percent.gz")
@@ -26,7 +26,7 @@ kddnames=read.table(
 colnames(kddata)=c(kddnames[,1], "normal")
 head(kddata)
 ```
-
+##transform the data
 ```{r}
 #set normal col to two levels:normal=0,bad=1
 levels(kddata$normal)[which(levels(kddata$normal) !='normal.')] <- "bad."
@@ -40,8 +40,9 @@ levels(kddata$service)[which(levels(kddata$service) != "http" & levels(kddata$se
 kddata$service<-as.numeric(factor(kddata$service,levels = c("private","http","others")))
 unique(kddata$service)
 ```
-For getting train and test data, my basic idea is like we first split the data into bad and normal, and use 80% of each dataset to be our train data, and 20% as our test data.
+##split data into train and test
 
+For getting train and test data, my basic idea is like we first split the data into bad and normal, and use 80% of each dataset to be our train data, and 20% as our test data.
 
 ```{r}
 set.seed(1)
@@ -85,7 +86,7 @@ fitted_results <- ifelse(fitted_results > 0.5,1,0) ##this line means if pi is bi
 #confusion matrix for model 1
 confusionMatrix(factor(fitted_results),factor(test$normal),positive="1",dnn = c("prediction","actual"))
 ```
-MODEL SELECTION
+##MODEL SELECTION
 
 Now, we build our model 2, we delete variable "count" from model 1
 ```{r}
@@ -125,6 +126,7 @@ we have p-value is very small. So, we reject the hypothesis that parameter of sr
 
 Futhermore, we use k-fold cross validation to fit our model 1. we set 10 folds.
 
+##K-fold cross validation
 ```{r}
 #k-fold cv
 #Create 10 equally size folds
@@ -139,5 +141,8 @@ cv_logit = lapply(folds, function(x) {
   return(cm$table)
 })
 cv_logit
+#sum those confusion matrix
+summary_matrix = Reduce('+', cv_logit)
+summary_matrix
 ```
 
