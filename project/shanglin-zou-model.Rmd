@@ -14,10 +14,10 @@ library(caret)
 
 ```{r}
 #read the data and name the col
-kddata<-read.csv("D:/datascience/data/kddcup.data_10_percent.gz")
+kddata<-read.csv(".../data/kddcup.data_10_percent.gz")
 
 kddnames=read.table(
-    "D:/datascience/data/kddcup.names",
+    ".../data/kddcup.names",
     sep=":",
     skip=1,
     as.is=T
