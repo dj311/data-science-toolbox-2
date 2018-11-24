@@ -10,9 +10,6 @@ When installing a new dependency or library, make sure to record it in:
   - [./install.R](./install.R) for R libraries
   - [./requirements.txt](requirements.txt) for Python libraries
 
-This will ensure that the Binder button above can pull in the correct libraries, and run correctly.
-
-
 ## R Setup
 R dependencies can be installed by running the `install.R` file in this repositories root directory.
 
